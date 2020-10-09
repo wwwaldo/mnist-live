@@ -12,8 +12,8 @@ reset.innerHTML = "Reset Canvas"
 
 document.body.appendChild(flexContainer);
 flexContainer.appendChild(canvas);
-flexContainer.appendChild(info)
-flexContainer.appendChild(reset)
+flexContainer.appendChild(reset);
+flexContainer.appendChild(info);
 
 
 // some hotfixes... ( ≖_≖)
@@ -32,7 +32,7 @@ document.addEventListener('mousedown', setPosition);
 document.addEventListener('mouseenter', setPosition);
 
 function fetchPrediction() {
-    const data = {};
+    const data = { 'image': canvas.toDataURL() };
 
     fetch('http://spell-org.spell-org.spell.services/spell-org/print-date-and-time/predict', {
           method: 'POST',
