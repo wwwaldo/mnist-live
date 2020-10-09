@@ -1,15 +1,19 @@
 // create canvas element and append it to document body
 var canvas = document.createElement('canvas');
 var info = document.createElement('div')
+var reset = document.createElement('button')
 var flexContainer = document.createElement('div')
 
 flexContainer.setAttribute('id', 'flex')
 
 info.setAttribute('id', 'info')
 
+reset.innerHTML = "Reset Canvas"
+
 document.body.appendChild(flexContainer);
 flexContainer.appendChild(canvas);
 flexContainer.appendChild(info)
+flexContainer.appendChild(reset)
 
 
 // some hotfixes... ( ≖_≖)
@@ -77,4 +81,9 @@ function draw(e) {
   ctx.stroke(); // draw it!
 }
 
+function clear() {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+
 window.setInterval(fetchPrediction, 3000); // hit the prediction endpoint every 3 s
+reset.onclick = clear // clear the canvas
