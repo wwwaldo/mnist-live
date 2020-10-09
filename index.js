@@ -1,10 +1,15 @@
 // create canvas element and append it to document body
 var canvas = document.createElement('canvas');
 var info = document.createElement('div')
-info.setAttribute('id', 'Info')
-info.innerHTML = "TODO"
-document.body.appendChild(canvas);
-document.body.appendChild(info)
+var flexContainer = document.createElement('div')
+
+flexContainer.setAttribute('id', 'flex')
+
+info.setAttribute('id', 'info')
+
+document.body.appendChild(flexContainer);
+flexContainer.appendChild(canvas);
+flexContainer.appendChild(info)
 
 
 // some hotfixes... ( ≖_≖)
@@ -22,6 +27,26 @@ document.addEventListener('mousemove', draw);
 document.addEventListener('mousedown', setPosition);
 document.addEventListener('mouseenter', setPosition);
 
+function fetchPrediction() {
+    const data = {};
+
+    fetch('http://spell-org.spell-org.spell.services/spell-org/print-date-and-time/predict', {
+          method: 'POST',
+          headers: {
+                  'Content-Type': 'application/json',
+                },
+          body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+          info.innerHTML = `Prediction is ${data.response}`
+    })
+    .catch((error) => {
+          console.error('Error:', error);
+    });
+    return
+}
+
 // new position from mouse event
 function setPosition(e) {
   pos.x = e.clientX;
@@ -31,7 +56,6 @@ function setPosition(e) {
 // resize canvas
 function resize() {
   let canvasSize = Math.min(window.innerWidth, window.innerHeight);
-  console.log(canvasSize);
   ctx.canvas.width = canvasSize;
   ctx.canvas.height = canvasSize;
 }
@@ -39,7 +63,6 @@ function resize() {
 function draw(e) {
   // mouse left button must be pressed
   if (e.buttons !== 1) return;
-  console.log("drawing (debug)")
 
   ctx.beginPath(); // begin
 
@@ -53,3 +76,5 @@ function draw(e) {
 
   ctx.stroke(); // draw it!
 }
+
+window.setInterval(fetchPrediction, 3000); // hit the prediction endpoint every 3 s
